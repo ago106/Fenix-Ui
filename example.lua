@@ -1,9 +1,9 @@
-local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/Fenix.lua"))()
+local Fenix = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/Fenix.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/InterfaceManager.lua"))()
 
-local Window = Fluent:CreateWindow({
-    Title = "Fluent Plus",
+local Window = Fenix:CreateWindow({
+    Title = "Fenix Plus",
     SubTitle = "by Apelsinka & Agushenka",
     TabWidth = 140,
     Size = UDim2.fromOffset(550, 450),
@@ -16,7 +16,7 @@ local Window = Fluent:CreateWindow({
     UserInfoPosition = "Top"
 })
 
-local Options = Fluent.Options
+local Options = Fenix.Options
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "" }),
@@ -24,7 +24,7 @@ local Tabs = {
 }
 
 do
-    Fluent:Notify({
+    Fenix:Notify({
         Title = "Notification",
         Content = "This is a notification",
         SubContent = "SubContent", -- Optional
@@ -159,7 +159,7 @@ do
             if state then
                 print("Keybind is being held down")
             end
-            if Fluent.Unloaded then break end
+            if Fenix.Unloaded then break end
         end
     end)
 
@@ -182,8 +182,8 @@ do
 end
 
 -- Addons:
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
+SaveManager:SetLibrary(Fenix)
+InterfaceManager:SetLibrary(Fenix)
 SaveManager:IgnoreThemeSettings()
 SaveManager:SetIgnoreIndexes({})
 InterfaceManager:SetFolder("Fenix-Ui")
