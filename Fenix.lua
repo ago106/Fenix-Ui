@@ -1,6 +1,6 @@
 --[[
 
-A modified version of Fluent Plus, custom for hubs
+A modified version of Fenix Plus, custom for hubs
 
 Developers: Apelsinka, Agusha
 
@@ -6576,7 +6576,7 @@ if RunService:IsStudio() then
 end
 
 local SaveManager = {} do
-	SaveManager.Folder = "FluentSettings"
+	SaveManager.Folder = "FenixSettings"
 	SaveManager.Ignore = {}
 	SaveManager.Parser = {
 		Toggle = {
@@ -6697,7 +6697,7 @@ local SaveManager = {} do
 				end
 			end
 
-			Fluent.SettingLoaded = true
+			Fenix.SettingLoaded = true
 
 			return true, decoded
 		end
@@ -6899,7 +6899,7 @@ local SaveManager = {} do
 end
 
 local InterfaceManager = {} do
-	InterfaceManager.Folder = "FluentSettings"
+	InterfaceManager.Folder = "FenixSettings"
 	InterfaceManager.Settings = {
 		Acrylic = true,
 		Transparency = true,
@@ -7135,7 +7135,7 @@ function Library:CreateMinimizer(Config)
 
 	if isMobile then
 		holder = New("Frame", {
-			Name = "FluentMinimizer",
+			Name = "FenixMinimizer",
 			Parent = parentGui,
 			Size = Config.Size or UDim2.fromOffset(36, 36),
 			Position = Config.Position or UDim2.new(0.45, 0, 0.025, 0),
@@ -7145,7 +7145,7 @@ function Library:CreateMinimizer(Config)
 		})
 	else
 		holder = New("Frame", {
-			Name = "FluentMinimizer",
+			Name = "FenixMinimizer",
 			Parent = parentGui,
 			Size = Config.Size or UDim2.fromOffset(36, 36),
 			Position = Config.Position or UDim2.new(0, 300, 0, 20),
@@ -7316,9 +7316,9 @@ function Library:Notify(Config)
 end
 
 if getgenv then
-	getgenv().Fluent = Library
+	getgenv().Fenix = Library
 else
-	Fluent = Library
+	Fenix = Library
 end
 
 local MinimizeButton = New("TextButton", {
