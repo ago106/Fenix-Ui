@@ -8,8 +8,6 @@ Space Hub: dsc.gg/ktC6dNVxDC
 Apel Hub: dsc.gg/
 ]]
 
--- removed settings :)
-
 local Lighting = game:GetService("Lighting")
 local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
