@@ -1,11 +1,5 @@
 --[[
-
-A modified version of Fenix Plus, custom for hubs
-
-Developers: Apelsinka, Agusha
-
-Space Hub: dsc.gg/ktC6dNVxDC
-Apel Hub: dsc.gg/
+dsc.gg/ktC6dNVxDC
 ]]
 
 local Lighting = game:GetService("Lighting")
@@ -24,7 +18,7 @@ local Mobile = not RunService:IsStudio() and table.find({Enum.Platform.IOS, Enum
 
 local fischbypass
 
-if game.GameId == 16732694052 then
+if game.GameId == 16732694052 or game.GameId == 126244816328678 or game.GameId == 131716211654599 then
 	fischbypass = true
 end
 
@@ -120,27 +114,40 @@ local Themes = {
 	GameSense = {
 		Name = "GameSense",
 		Accent = Color3.fromRGB(173, 224, 43),
-		AcrylicMain = Color3.fromRGB(15, 15, 15),
-		AcrylicBorder = Color3.fromRGB(65, 65, 65),
-		AcrylicGradient = ColorSequence.new(Color3.fromRGB(12, 12, 12), Color3.fromRGB(18, 18, 18)),
-		AcrylicNoise = 0.94,
-		TitleBarLine = Color3.fromRGB(65, 65, 65),
-		Tab = Color3.fromRGB(65, 65, 65),
-		Element = Color3.fromRGB(36, 36, 36),
-		ElementBorder = Color3.fromRGB(23, 23, 23),
-		InElementBorder = Color3.fromRGB(52, 52, 52),
-		ElementTransparency = 0.82,
-		DropdownFrame = Color3.fromRGB(28, 29, 28),
-		DropdownHolder = Color3.fromRGB(34, 34, 34),
-		DropdownBorder = Color3.fromRGB(23, 23, 23),
-		Dialog = Color3.fromRGB(23, 23, 23),
-		DialogHolder = Color3.fromRGB(18, 18, 18),
-		DialogHolderLine = Color3.fromRGB(12, 12, 12),
-		DialogButton = Color3.fromRGB(36, 36, 36),
-		DialogButtonBorder = Color3.fromRGB(60, 60, 60),
-		DialogBorder = Color3.fromRGB(50, 50, 50),
-		DialogInput = Color3.fromRGB(37, 37, 37),
-		DialogInputLine = Color3.fromRGB(130, 130, 130),
+		AcrylicMain = Color3.fromRGB(10, 10, 10),
+		AcrylicBorder = Color3.fromRGB(55, 55, 55),
+		AcrylicGradient = ColorSequence.new(Color3.fromRGB(8, 8, 8), Color3.fromRGB(15, 15, 15)),
+		AcrylicNoise = 0.92,
+		TitleBarLine = Color3.fromRGB(60, 60, 60),
+		Tab = Color3.fromRGB(45, 45, 45),
+		Element = Color3.fromRGB(32, 32, 32),
+		ElementBorder = Color3.fromRGB(25, 25, 25),
+		InElementBorder = Color3.fromRGB(65, 65, 65),
+		ElementTransparency = 0.85,
+		ToggleSlider = Color3.fromRGB(50, 50, 50),
+		ToggleToggled = Color3.fromRGB(173, 224, 43),
+		SliderRail = Color3.fromRGB(20, 20, 20),
+		DropdownFrame = Color3.fromRGB(35, 35, 35),
+		DropdownHolder = Color3.fromRGB(28, 28, 28),
+		DropdownBorder = Color3.fromRGB(70, 70, 70),
+		DropdownOption = Color3.fromRGB(38, 38, 38),
+		Keybind = Color3.fromRGB(34, 34, 34),
+		Input = Color3.fromRGB(25, 25, 25),
+		InputFocused = Color3.fromRGB(173, 224, 43),
+		InputIndicator = Color3.fromRGB(120, 120, 120),
+		InputIndicatorFocus = Color3.fromRGB(200, 230, 100),
+		Dialog = Color3.fromRGB(20, 20, 20),
+		DialogHolder = Color3.fromRGB(15, 15, 15),
+		DialogHolderLine = Color3.fromRGB(10, 10, 10),
+		DialogButton = Color3.fromRGB(40, 40, 40),
+		DialogButtonBorder = Color3.fromRGB(80, 80, 80),
+		DialogBorder = Color3.fromRGB(60, 60, 60),
+		DialogInput = Color3.fromRGB(30, 30, 30),
+		DialogInputLine = Color3.fromRGB(140, 140, 140),
+		Text = Color3.fromRGB(240, 240, 240),
+		SubText = Color3.fromRGB(200, 200, 200),
+		Hover = Color3.fromRGB(45, 45, 48),
+		HoverChange = 0.06
 	},
 	AMOLED = {
 		Name = "AMOLED",
@@ -2424,6 +2431,9 @@ Components.Dialog = (function()
 	local Instant = Flipper.Instant.new
 	local New = Creator.New
 
+	local Workspace = game:GetService("Workspace")
+	local Camera = Workspace.CurrentCamera
+
 	local Dialog = {
 		Window = nil,
 	}
@@ -2581,6 +2591,65 @@ Components.Dialog = (function()
 
 	return Dialog
 end)()
+
+local function CreateDialog(Config)
+	local Dialog = Dialog:Create()
+	Dialog.Title.Text = Config.Title
+
+	local ContentHolder = New("ScrollingFrame", {
+		BackgroundTransparency = 1,
+		ScrollBarImageTransparency = 0.7,
+		ScrollBarThickness = 4,
+		BottomImage = "rbxassetid://6889812791",
+		MidImage = "rbxassetid://6889812721",
+		TopImage = "rbxassetid://6276641225",
+		Position = UDim2.fromOffset(20, 60),
+		Size = UDim2.new(1, -40, 1, -130),
+		CanvasSize = UDim2.fromOffset(0, 0),
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		ScrollingDirection = Enum.ScrollingDirection.Y,
+		Parent = Dialog.Root,
+	})
+
+	local Content = New("TextLabel", {
+		FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
+		Text = Config.Content,
+		TextColor3 = Color3.fromRGB(240, 240, 240),
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Top,
+		AutomaticSize = Enum.AutomaticSize.Y,
+		TextWrapped = true,
+		Size = UDim2.new(1, -8, 0, 0),
+		BackgroundTransparency = 1,
+		Parent = ContentHolder,
+		ThemeTag = { TextColor3 = "Text" },
+	})
+
+	New("UISizeConstraint", {
+		MinSize = Vector2.new(300, 165),
+		MaxSize = Vector2.new(620, math.huge),
+		Parent = Dialog.Root,
+	})
+
+	local maxWidth = math.min(620, Dialog.Window.Size.X.Offset - 120)
+	local baseWidth = math.max(300, math.min(maxWidth, Content.TextBounds.X + 40))
+	Dialog.Root.Size = UDim2.fromOffset(baseWidth, 165)
+	ContentHolder.Size = UDim2.new(1, -40, 1, -130)
+	task.defer(function()
+		local contentHeight = Content.TextBounds.Y
+		local screenHeight = Camera.ViewportSize.Y
+		local maxDialogHeight = math.floor(screenHeight * 0.5)
+		local desired = math.clamp(contentHeight + 130, 165, maxDialogHeight)
+		Dialog.Root.Size = UDim2.fromOffset(baseWidth, desired)
+	end)
+
+	for _, Button in next, Config.Buttons do
+		Dialog:Button(Button.Title, Button.Callback)
+	end
+
+	Dialog:Open()
+end
 Components.Notification = (function()
 	local Spring = Flipper.Spring.new
 	local Instant = Flipper.Instant.new
@@ -4111,7 +4180,7 @@ ElementsTable.Dropdown = (function()
 		end
 
 		local DropdownHolderFrame = New("Frame", {
-			Size = UDim2.fromScale(1, 0.6),
+			Size = UDim2.fromScale(1, 0),
 			ThemeTag = {
 				BackgroundColor3 = "DropdownHolder",
 			},
@@ -4168,7 +4237,12 @@ ElementsTable.Dropdown = (function()
 		local function RecalculateListSize()
 			local listHeight = DropdownListLayout.AbsoluteContentSize.Y
 			local extra = Dropdown.Search and 43 or 10
-			local maxHeight = 392
+			local itemHeight = 32
+			local padding = 3
+			local fullItems = 4
+			local partialFraction = 0.5
+			local maxScrollHeight = fullItems * itemHeight + fullItems * padding + partialFraction * itemHeight
+			local maxHeight = maxScrollHeight + extra
 			local targetHeight = math.min(listHeight + extra, maxHeight)
 			DropdownHolderCanvas.Size = UDim2.fromOffset(ListSizeX, targetHeight)
 		end
@@ -4258,7 +4332,7 @@ ElementsTable.Dropdown = (function()
 
 		function Dropdown:Close()
 			Dropdown.Opened = false
-			DropdownHolderFrame.Size = UDim2.fromScale(1, 0.6)
+			DropdownHolderFrame.Size = UDim2.fromScale(1, 0)
 			DropdownHolderCanvas.Visible = false
 			TweenService:Create(
 				DropdownIco,
@@ -6576,7 +6650,7 @@ if RunService:IsStudio() then
 end
 
 local SaveManager = {} do
-	SaveManager.Folder = "FenixSettings"
+	SaveManager.Folder = "FluentSettings"
 	SaveManager.Ignore = {}
 	SaveManager.Parser = {
 		Toggle = {
@@ -6697,7 +6771,7 @@ local SaveManager = {} do
 				end
 			end
 
-			Fenix.SettingLoaded = true
+			Fluent.SettingLoaded = true
 
 			return true, decoded
 		end
@@ -6899,11 +6973,12 @@ local SaveManager = {} do
 end
 
 local InterfaceManager = {} do
-	InterfaceManager.Folder = "FenixSettings"
+	InterfaceManager.Folder = "FluentSettings"
 	InterfaceManager.Settings = {
+		Theme = "Amethyst",
 		Acrylic = true,
 		Transparency = true,
-		MenuKeybind = "M"
+		MenuKeybind = "LeftControl"
 	}
 
 	function InterfaceManager:SetTheme(name)
@@ -6993,7 +7068,7 @@ local InterfaceManager = {} do
 			Settings.Acrylic = false
 		end
 
-		section:AddSlider("WindowTransparency", {
+		--[[section:AddSlider("WindowTransparency", {
 			Title = "Window Transparency",
 			Description = "Adjusts the window transparency.",
 			Default = 1,
@@ -7003,8 +7078,18 @@ local InterfaceManager = {} do
 			Callback = function(Value)
 				Library:SetWindowTransparency(Value)
 			end
+		})]]
+		
+		section:AddToggle("TransparentToggle", {
+			Title = "Transparency",
+			Description = "Makes the interface transparent.",
+			Default = Settings.Transparency,
+			Callback = function(Value)
+				Library:ToggleTransparency(Value)
+				Settings.Transparency = Value
+                InterfaceManager:SaveSettings()
+			end
 		})
-
 
 		local MenuKeybind = section:AddKeybind("MenuKeybind", { Title = "Minimize Bind", Default = Library.MinimizeKey.Name or Settings.MenuKeybind })
 		MenuKeybind:OnChanged(function()
@@ -7135,7 +7220,7 @@ function Library:CreateMinimizer(Config)
 
 	if isMobile then
 		holder = New("Frame", {
-			Name = "FenixMinimizer",
+			Name = "FluentMinimizer",
 			Parent = parentGui,
 			Size = Config.Size or UDim2.fromOffset(36, 36),
 			Position = Config.Position or UDim2.new(0.45, 0, 0.025, 0),
@@ -7145,7 +7230,7 @@ function Library:CreateMinimizer(Config)
 		})
 	else
 		holder = New("Frame", {
-			Name = "FenixMinimizer",
+			Name = "FluentMinimizer",
 			Parent = parentGui,
 			Size = Config.Size or UDim2.fromOffset(36, 36),
 			Position = Config.Position or UDim2.new(0, 300, 0, 20),
@@ -7316,9 +7401,9 @@ function Library:Notify(Config)
 end
 
 if getgenv then
-	getgenv().Fenix = Library
+	getgenv().Fluent = Library
 else
-	Fenix = Library
+	Fluent = Library
 end
 
 local MinimizeButton = New("TextButton", {
