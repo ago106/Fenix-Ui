@@ -4631,103 +4631,35 @@ ElementsTable.Dropdown = (function()
 	return Element
 end)()
 ElementsTable.Paragraph = (function()
-    local Paragraph = {}
-    Paragraph.__index = Paragraph
-    Paragraph.__type = "Paragraph"
+	local Paragraph = {}
+	Paragraph.__index = Paragraph
+	Paragraph.__type = "Paragraph"
 
-    function Paragraph:New(Config)
-        Config.Content = Config.Content or ""
-        Config.TitleAlignment = Config.TitleAlignment or "Left"
-        Config.ContentAlignment = Config.ContentAlignment or "Left"
+	function Paragraph:New(Config)
+		Config.Content = Config.Content or ""
 
-        local function mapAlignment(align)
-            if align == "Middle" or align == "Center" then
-                return Enum.TextXAlignment.Center
-            elseif align == "Right" then
-                return Enum.TextXAlignment.Right
-            else
-                return Enum.TextXAlignment.Left
-            end
-        end
+		local Paragraph = Components.Element(Config.Title, Config.Content, Paragraph.Container, false, Config)
+		Paragraph.Frame.BackgroundTransparency = 0.92
+		Paragraph.Border.Transparency = 0.6
 
-        local Paragraph = Components.Element(Config.Title, Config.Content, Paragraph.Container, false, {
-            TitleAlignment = Config.TitleAlignment,
-            DescriptionAlignment = Config.ContentAlignment
-        })
+		Paragraph.SetTitle = Paragraph.SetTitle
+		Paragraph.SetDesc = Paragraph.SetDesc
+		Paragraph.Visible = Paragraph.Visible
+		Paragraph.Elements = Paragraph
 
-        Paragraph.Frame.BackgroundTransparency = 0.92
-        Paragraph.Border.Transparency = 0.6
+		function Paragraph:SetText(NewTitle, NewContent)
+			if NewTitle then
+				Paragraph.SetTitle(self, NewTitle)
+			end
+			if NewContent then
+				Paragraph.SetDesc(self, NewContent)
+			end
+		end
 
-        Paragraph.SetTitle = Paragraph.SetTitle
-        Paragraph.SetDesc = Paragraph.SetDesc
-        Paragraph.Visible = Paragraph.Visible
-        Paragraph.Elements = Paragraph
+		return Paragraph
+	end
 
-        Paragraph.TitleAlignment = mapAlignment(Config.TitleAlignment)
-        Paragraph.DescriptionAlignment = mapAlignment(Config.ContentAlignment)
-
-        if Paragraph.Frame.Title and (Paragraph.Frame.Title:IsA("TextLabel") or Paragraph.Frame.Title:IsA("TextBox")) then
-            Paragraph.Frame.Title.TextXAlignment = Paragraph.TitleAlignment
-            print("Paragraph: Set Title alignment to", Paragraph.TitleAlignment)
-        else
-            warn("Paragraph: Title is not a valid TextLabel or TextBox")
-        end
-        if Paragraph.Frame.Description and (Paragraph.Frame.Description:IsA("TextLabel") or Paragraph.Frame.Description:IsA("TextBox")) then
-            Paragraph.Frame.Description.TextXAlignment = Paragraph.DescriptionAlignment
-            print("Paragraph: Set Description alignment to", Paragraph.DescriptionAlignment)
-        else
-            warn("Paragraph: Description is not a valid TextLabel or TextBox")
-        end
-
-        function Paragraph:SetText(NewTitle, NewContent)
-            if NewTitle then
-                Paragraph.SetTitle(self, NewTitle)
-            end
-            if NewContent then
-                Paragraph.SetDesc(self, NewContent)
-            end
-            Paragraph.Frame.BackgroundTransparency = 0.92
-            Paragraph.Border.Transparency = 0.6
-            if Paragraph.Frame.Title and (Paragraph.Frame.Title:IsA("TextLabel") or Paragraph.Frame.Title:IsA("TextBox")) then
-                Paragraph.Frame.Title.TextXAlignment = Paragraph.TitleAlignment
-            end
-            if Paragraph.Frame.Description and (Paragraph.Frame.Description:IsA("TextLabel") or Paragraph.Frame.Description:IsA("TextBox")) then
-                Paragraph.Frame.Description.TextXAlignment = Paragraph.DescriptionAlignment
-            end
-        end
-
-        function Paragraph:SetAlignment(NewTitleAlignment, NewContentAlignment)
-            if NewTitleAlignment then
-                Paragraph.TitleAlignment = mapAlignment(NewTitleAlignment)
-                if Paragraph.Frame.Title and (Paragraph.Frame.Title:IsA("TextLabel") or Paragraph.Frame.Title:IsA("TextBox")) then
-                    Paragraph.Frame.Title.TextXAlignment = Paragraph.TitleAlignment
-                    print("Paragraph: Updated Title alignment to", Paragraph.TitleAlignment)
-                else
-                    warn("Paragraph:SetAlignment: Title is not a valid TextLabel or TextBox")
-                end
-            end
-            if NewContentAlignment then
-                Paragraph.DescriptionAlignment = mapAlignment(NewContentAlignment)
-                if Paragraph.Frame.Description and (Paragraph.Frame.Description:IsA("TextLabel") or Paragraph.Frame.Description:IsA("TextBox")) then
-                    Paragraph.Frame.Description.TextXAlignment = Paragraph.DescriptionAlignment
-                    print("Paragraph: Updated Description alignment to", Paragraph.DescriptionAlignment)
-                else
-                    warn("Paragraph:SetAlignment: Description is not a valid TextLabel or TextBox")
-                end
-            end
-        end
-
-        function Paragraph:GetAlignment()
-            return {
-                TitleAlignment = tostring(Paragraph.TitleAlignment),
-                DescriptionAlignment = tostring(Paragraph.DescriptionAlignment)
-            }
-        end
-
-        return Paragraph
-    end
-
-    return Paragraph
+	return Paragraph
 end)()
 ElementsTable.Slider = (function()
 	local Element = {}
