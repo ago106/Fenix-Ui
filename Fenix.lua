@@ -4631,35 +4631,58 @@ ElementsTable.Dropdown = (function()
 	return Element
 end)()
 ElementsTable.Paragraph = (function()
-	local Paragraph = {}
-	Paragraph.__index = Paragraph
-	Paragraph.__type = "Paragraph"
+    local Paragraph = {}
+    Paragraph.__index = Paragraph
+    Paragraph.__type = "Paragraph"
 
-	function Paragraph:New(Config)
-		Config.Content = Config.Content or ""
+    function Paragraph:New(Config)
+        -- Default values
+        Config.Content = Config.Content or ""
+        Config.TitleAlignment = Config.TitleAlignment or "Left"
+        Config.ContentAlignment = Config.ContentAlignment or "Left"
 
-		local Paragraph = Components.Element(Config.Title, Config.Content, Paragraph.Container, false, Config)
-		Paragraph.Frame.BackgroundTransparency = 0.92
-		Paragraph.Border.Transparency = 0.6
+        local TitleAlignment = Config.TitleAlignment == "Middle" and "Center" or Config.TitleAlignment
+        local DescriptionAlignment = Config.ContentAlignment == "Middle" and "Center" or Config.ContentAlignment
 
-		Paragraph.SetTitle = Paragraph.SetTitle
-		Paragraph.SetDesc = Paragraph.SetDesc
-		Paragraph.Visible = Paragraph.Visible
-		Paragraph.Elements = Paragraph
+        local Paragraph = Components.Element(Config.Title, Config.Content, Paragraph.Container, false, {
+            TitleAlignment = TitleAlignment,
+            DescriptionAlignment = DescriptionAlignment
+        })
+        Paragraph.Frame.BackgroundTransparency = 0.92
+        Paragraph.Border.Transparency = 0.6
 
-		function Paragraph:SetText(NewTitle, NewContent)
-			if NewTitle then
-				Paragraph.SetTitle(self, NewTitle)
-			end
-			if NewContent then
-				Paragraph.SetDesc(self, NewContent)
-			end
-		end
+        Paragraph.SetTitle = Paragraph.SetTitle
+        Paragraph.SetDesc = Paragraph.SetDesc
+        Paragraph.Visible = Paragraph.Visible
+        Paragraph.Elements = Paragraph
 
-		return Paragraph
-	end
+        function Paragraph:SetText(NewTitle, NewContent)
+            if NewTitle then
+                Paragraph.SetTitle(self, NewTitle)
+            end
+            if NewContent then
+                Paragraph.SetDesc(self, NewContent)
+            end
+            Paragraph.Frame.BackgroundTransparency = 0.92
+            Paragraph.Border.Transparency = 0.6
+        end
 
-	return Paragraph
+
+        function Paragraph:SetAlignment(NewTitleAlignment, NewContentAlignment)
+            if NewTitleAlignment then
+                local TitleAlign = NewTitleAlignment == "Middle" and "Center" or NewTitleAlignment
+                Paragraph.Frame.TitleAlignment = TitleAlign
+            end
+            if NewContentAlignment then
+                local ContentAlign = NewContentAlignment == "Middle" and "Center" or NewContentAlignment
+                Paragraph.Frame.DescriptionAlignment = ContentAlign
+            end
+        end
+
+        return Paragraph
+    end
+
+    return Paragraph
 end)()
 ElementsTable.Slider = (function()
 	local Element = {}
