@@ -7395,7 +7395,7 @@ end
 
 function Library:ToggleTransparency(Value)
 	if Library.Window then
-		Library.Window.AcrylicPaint.Frame.Background.BackgroundTransparency = Value and 0.9 or 0
+		Library.Window.AcrylicPaint.Frame.Background.BackgroundTransparency = Value and 0.95 or 0
 	end
 end
 function Library:SetWindowTransparency(Value)
