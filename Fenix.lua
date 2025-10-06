@@ -1,5 +1,5 @@
 --[[
-dsc.gg/ktC6dNVxDC
+Tung Tung TUng Sahur
 ]]
 
 local Lighting = game:GetService("Lighting")
