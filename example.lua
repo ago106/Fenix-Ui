@@ -1,6 +1,4 @@
-local Fenix = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/Fenix.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/InterfaceManager.lua"))()
+local Fenix, SaveManager, InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ago106/Fenix-Ui/refs/heads/main/Fenix.lua"))()
 
 local Window = Fenix:CreateWindow({
     Title = "Fenix Plus",
