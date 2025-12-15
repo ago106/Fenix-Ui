@@ -1843,7 +1843,7 @@ Components.Element = (function()
 			Text = Title,
 			TextColor3 = Color3.fromRGB(240, 240, 240),
 			TextSize = 13,
-			TextXAlignment = Enum.TextXAlignment.Left,
+			TextXAlignment = Options.Alignment or Enum.TextXAlignment.Left,
 			Size = UDim2.new(1, 0, 0, 14),
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 			BackgroundTransparency = 1,
@@ -1894,7 +1894,7 @@ Components.Element = (function()
 			TextColor3 = Color3.fromRGB(200, 200, 200),
 			TextSize = 12,
 			TextWrapped = true,
-			TextXAlignment = Enum.TextXAlignment.Left,
+			TextXAlignment = Options.Alignment or Enum.TextXAlignment.Left,
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 			AutomaticSize = Enum.AutomaticSize.Y,
 			BackgroundTransparency = 1,
@@ -3947,9 +3947,14 @@ ElementsTable.Toggle = (function()
 		local ToggleFrame = Components.Element(Config.Title, Config.Description, self.Container, true, Config)
 		ToggleFrame.DescLabel.Size = UDim2.new(1, -54, 0, 14)
 
+
+		function Toggle:SetVisible(bool)
+            ToggleFrame.Frame.Visible = bool
+        end
+        
 		Toggle.SetTitle = ToggleFrame.SetTitle
 		Toggle.SetDesc = ToggleFrame.SetDesc
-		Toggle.Visible = ToggleFrame.Visible
+		Toggle.Visible = Toggle.SetVisible
 		Toggle.Elements = ToggleFrame
 
 		local ToggleCircle = New("ImageLabel", {
@@ -4676,10 +4681,19 @@ ElementsTable.Paragraph = (function()
 
 	function Paragraph:New(Config)
 		Config.Content = Config.Content or ""
+		Config.Alignment = Config.Alignment or Enum.TextXAlignment.Left
 
 		local Paragraph = Components.Element(Config.Title, Config.Content, Paragraph.Container, false, Config)
 		Paragraph.Frame.BackgroundTransparency = 0.92
 		Paragraph.Border.Transparency = 0.6
+
+		-- Apply alignment to Title and Content
+		if Paragraph.Title then
+			Paragraph.Title.TextXAlignment = Config.Alignment
+		end
+		if Paragraph.Desc then
+			Paragraph.Desc.TextXAlignment = Config.Alignment
+		end
 
 		Paragraph.SetTitle = Paragraph.SetTitle
 		Paragraph.SetDesc = Paragraph.SetDesc
@@ -4692,6 +4706,15 @@ ElementsTable.Paragraph = (function()
 			end
 			if NewContent then
 				Paragraph.SetDesc(self, NewContent)
+			end
+		end
+
+		function Paragraph:SetAlignment(NewAlignment)
+			if Paragraph.Title then
+				Paragraph.Title.TextXAlignment = NewAlignment
+			end
+			if Paragraph.Desc then
+				Paragraph.Desc.TextXAlignment = NewAlignment
 			end
 		end
 
@@ -5737,84 +5760,80 @@ ElementsTable.Colorpicker = (function()
 	return Element
 end)()
 ElementsTable.Input = (function()
-	local Element = {}
-	Element.__index = Element
-	Element.__type = "Input"
-
-	function Element:New(Idx, Config)
-		assert(Config.Title, "Input - Missing Title")
-		Config.Callback = Config.Callback or function() end
-
-		local Input = {
-			Value = Config.Default or "",
-			Numeric = Config.Numeric or false,
-			Finished = Config.Finished or false,
-			Callback = Config.Callback or function(Value) end,
-			Type = "Input",
-		}
-
-		local InputFrame = Components.Element(Config.Title, Config.Description, self.Container, false)
-
-		Input.SetTitle = InputFrame.SetTitle
-		Input.SetDesc = InputFrame.SetDesc
-		Input.Visible = InputFrame.Visible
-		Input.Elements = InputFrame
-
-		local Textbox = Components.Textbox(InputFrame.Frame, true)
-		Textbox.Frame.Position = UDim2.new(1, -10, 0.5, 0)
-		Textbox.Frame.AnchorPoint = Vector2.new(1, 0.5)
-		Textbox.Frame.Size = UDim2.fromOffset(160, 30)
-		Textbox.Input.Text = Config.Default or ""
-		Textbox.Input.PlaceholderText = Config.Placeholder or ""
-
-		local Box = Textbox.Input
-
-		function Input:SetValue(Text)
-			if Config.MaxLength and #Text > Config.MaxLength then
-				Text = Text:sub(1, Config.MaxLength)
-			end
-
-			if Input.Numeric then
-				if (not tonumber(Text)) and Text:len() > 0 then
-					Text = Input.Value
-				end
-			end
-
-			Input.Value = Text
-			Box.Text = Text
-
-			Library:SafeCallback(Input.Callback, Input.Value)
-			Library:SafeCallback(Input.Changed, Input.Value)
-		end
-
-		if Input.Finished then
-			AddSignal(Box.FocusLost, function(enter)
-				if not enter then
-					return
-				end
-				Input:SetValue(Box.Text)
-			end)
-		else
-			AddSignal(Box:GetPropertyChangedSignal("Text"), function()
-				Input:SetValue(Box.Text)
-			end)
-		end
-
-		function Input:OnChanged(Func)
-			Input.Changed = Func
-			Func(Input.Value)
-		end
-
-		function Input:Destroy()
-			InputFrame:Destroy()
-			Library.Options[Idx] = nil
-		end
-
-		Library.Options[Idx] = Input
-		return Input
-	end
-
-	return Element
+    local Element = {}
+    Element.__index = Element
+    Element.__type = "Input"
+    function Element:New(Idx, Config)
+        assert(Config.Title, "Input - Missing Title")
+        Config.Callback = Config.Callback or function() end
+        local Input = {
+            Value = Config.Default or "",
+            Numeric = Config.Numeric or false,
+            Finished = Config.Finished or false,
+            Callback = Config.Callback or function(Value) end,
+            Type = "Input",
+        }
+        local InputFrame = Components.Element(Config.Title, Config.Description, self.Container, false)
+        Input.SetTitle = InputFrame.SetTitle
+        Input.SetDesc = InputFrame.SetDesc
+        
+        function Input:SetVisible(bool)
+            InputFrame.Frame.Visible = bool
+        end
+        
+        Input.Visible = Input.SetVisible
+        Input.Elements = InputFrame
+        
+        local Textbox = Components.Textbox(InputFrame.Frame, true)
+        Textbox.Frame.Position = UDim2.new(1, -10, 0.5, 0)
+        Textbox.Frame.AnchorPoint = Vector2.new(1, 0.5)
+        Textbox.Frame.Size = UDim2.fromOffset(160, 30)
+        Textbox.Input.Text = Config.Default or ""
+        Textbox.Input.PlaceholderText = Config.Placeholder or ""
+        local Box = Textbox.Input
+        
+        function Input:SetValue(Text)
+            if Config.MaxLength and #Text > Config.MaxLength then
+                Text = Text:sub(1, Config.MaxLength)
+            end
+            if Input.Numeric then
+                if (not tonumber(Text)) and Text:len() > 0 then
+                    Text = Input.Value
+                end
+            end
+            Input.Value = Text
+            Box.Text = Text
+            Library:SafeCallback(Input.Callback, Input.Value)
+            Library:SafeCallback(Input.Changed, Input.Value)
+        end
+        
+        if Input.Finished then
+            AddSignal(Box.FocusLost, function(enter)
+                if not enter then
+                    return
+                end
+                Input:SetValue(Box.Text)
+            end)
+        else
+            AddSignal(Box:GetPropertyChangedSignal("Text"), function()
+                Input:SetValue(Box.Text)
+            end)
+        end
+        
+        function Input:OnChanged(Func)
+            Input.Changed = Func
+            Func(Input.Value)
+        end
+        
+        function Input:Destroy()
+            InputFrame:Destroy()
+            Library.Options[Idx] = nil
+        end
+        
+        Library.Options[Idx] = Input
+        return Input
+    end
+    return Element
 end)()
 
 local NotificationModule = Components.Notification
@@ -7246,12 +7265,13 @@ function Library:CreateMinimizer(Config)
 				Position = UDim2.new(0.5, 0, 0.5, 0),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
+				ScaleType = Enum.ScaleType.Fit,
 				ThemeTag = {
 					ImageColor3 = "Text",
 				},
 			}, {
 				New("UIAspectRatioConstraint", { AspectRatio = 1, AspectType = Enum.AspectType.FitWithinMaxSize }),
-				New("UICorner", { CornerRadius = UDim.new(0, 0) })
+				New("UICorner", { CornerRadius = UDim.new(1, 0) })
 			}),
 
 		})
